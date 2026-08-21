@@ -1,1 +1,3 @@
-<Solution />
+<Solution>
+  <Project Path="TournaCore.API/TournaCore.API.csproj" />
+</Solution>

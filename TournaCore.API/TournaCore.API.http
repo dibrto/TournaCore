@@ -1,0 +1,6 @@
+@TournaCore.API_HostAddress = http://localhost:5001
+
+GET {{TournaCore.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

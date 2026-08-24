@@ -1,6 +1,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using TournaCore.API.Data;
+using TournaCore.API.Servides.Auth;
 
 namespace TournaCore.API {
     public class Program {
@@ -19,8 +20,10 @@ namespace TournaCore.API {
                 options.LowercaseUrls = true;
             });
 
+
             // Add services to the container.
             builder.Services.AddControllers();
+            builder.Services.AddScoped<IAuthService, AuthService>();
 
             // api doc
             builder.Services.AddOpenApi();

@@ -71,7 +71,16 @@ namespace TournaCore.API {
                      new OpenApiSecurityRequirement {
                          [new OpenApiSecuritySchemeReference("Bearer", document)] = []
                      }
-                 );
+                );
+
+                options.SwaggerDoc("v1", new OpenApiInfo {
+                    Title = "TournaCore API",
+                    Version = "v1",
+                    Description = """
+                       API for managing tournaments.                                            
+                       For error codes and response formats, see [Error documentation](https://github.com/dibrto/TournaCore/blob/master/TournaCore.API/Docs/errors.md).
+                    """
+                });
             });
 
             // health checks
@@ -115,7 +124,7 @@ namespace TournaCore.API {
 
             app.MapControllers();
             app.MapHealthChecks("/health");
-
+           
             app.Run();
         }
     }

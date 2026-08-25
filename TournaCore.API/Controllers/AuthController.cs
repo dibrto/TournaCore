@@ -8,8 +8,9 @@ namespace TournaCore.API.Controllers {
     [ApiController]
     public class AuthController(IAuthService service) : ControllerBase {
         [HttpPost("login")]
-        [ProducesResponseType(typeof(void), StatusCodes.Status422UnprocessableEntity, Description = "Validation error")]
-        [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized, Description = "Invalid credentials")]       
+        [ProducesResponseType(typeof(LoginResponse), 200)]
+        [ProducesResponseType(typeof(void), 422, Description = "Validation error")]
+        [ProducesResponseType(typeof(void), 401, Description = "Invalid credentials")]       
         public async Task<ActionResult<LoginResponse>> Login(LoginRequest req) {
             var res = await service.Login(req);
 
@@ -20,15 +21,16 @@ namespace TournaCore.API.Controllers {
         }
 
         [HttpPost("register")]
-        [ProducesResponseType(typeof(void), StatusCodes.Status422UnprocessableEntity, Description = "Validation error")]
-        [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict, Description = "Email already exists")]
-        public async Task<Results<Ok<RegisterResponse>, Conflict<ErrorResponse>>> Register (RegisterRequest req) {
+        [ProducesResponseType(typeof(RegisterResponse), 200)]
+        [ProducesResponseType(typeof(void), 422, Description = "Validation error")]
+        [ProducesResponseType(typeof(void), 409, Description = "Email already exists")]
+        public async Task<ActionResult<RegisterResponse>> Register (RegisterRequest req) {
             var res = await service.Register(req);
 
             if (res.Error is not null)
-                return TypedResults.Conflict(res.Error);
+                return Conflict(res.Error);
 
-            return TypedResults.Ok(res.Data);
+            return Ok(res.Data);
         }
     }
 }

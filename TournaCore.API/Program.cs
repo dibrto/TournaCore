@@ -49,7 +49,7 @@ namespace TournaCore.API {
                              Errors = errors
                          };
 
-                         return new BadRequestObjectResult(response);
+                         return new UnprocessableEntityObjectResult(response);
                      };
                  });
             builder.Services.AddScoped<IAuthService, AuthService>();

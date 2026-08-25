@@ -33,7 +33,7 @@ namespace TournaCore.API.Servides.Auth {
 
             return new Response<LoginResponse> {
                 Data = new LoginResponse {
-                    Token = tokenService.GenerateToken(user)
+                    AccessToken = tokenService.GenerateToken(user)
                 }
             };
         }
@@ -70,7 +70,7 @@ namespace TournaCore.API.Servides.Auth {
 
             return new Response<RegisterResponse> {
                 Data = new RegisterResponse {
-                    Token = tokenService.GenerateToken(user)
+                    AccessToken = tokenService.GenerateToken(user)
                 }
             };
         }

@@ -22,7 +22,7 @@ namespace TournaCore.API.Models {
     }
 
     public class LoginResponse {
-        public string Token { get; set; } = string.Empty;
+        public string AccessToken { get; set; } = string.Empty;
     }
 
     public class RegisterRequest {
@@ -37,6 +37,6 @@ namespace TournaCore.API.Models {
     }
 
     public class RegisterResponse {
-        public string Token { get; set; } = string.Empty;
+        public string AccessToken { get; set; } = string.Empty;
     }
 }

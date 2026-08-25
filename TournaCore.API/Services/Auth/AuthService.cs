@@ -2,7 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using TournaCore.API.Common;
 using TournaCore.API.Data;
-using TournaCore.API.Models;
+using TournaCore.API.Models.DTOs;
+using TournaCore.API.Models.Entity;
 using TournaCore.API.Servides.Token;
 
 namespace TournaCore.API.Servides.Auth {
@@ -33,7 +34,11 @@ namespace TournaCore.API.Servides.Auth {
 
             return new Response<LoginResponse> {
                 Data = new LoginResponse {
-                    AccessToken = tokenService.GenerateToken(user)
+                    AccessToken = tokenService.GenerateToken(user),
+                    User = new UserResponse { 
+                        ID = user.ID,
+                        Email  = user.Email
+                    }
                 }
             };
         }
@@ -70,7 +75,11 @@ namespace TournaCore.API.Servides.Auth {
 
             return new Response<RegisterResponse> {
                 Data = new RegisterResponse {
-                    AccessToken = tokenService.GenerateToken(user)
+                    AccessToken = tokenService.GenerateToken(user),
+                    User = new UserResponse {
+                        ID = user.ID,
+                        Email = user.Email
+                    }
                 }
             };
         }

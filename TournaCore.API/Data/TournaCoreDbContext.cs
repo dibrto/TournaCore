@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TournaCore.API.Models;
+using TournaCore.API.Models.Entity;
 
 namespace TournaCore.API.Data {
     public class TournaCoreDbContext : DbContext {

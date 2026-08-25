@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace TournaCore.API.Models {
+namespace TournaCore.API.Models.DTOs {
     public class Response<T> {
         public T? Data { get; set; }
         public ErrorResponse? Error { get; set; }

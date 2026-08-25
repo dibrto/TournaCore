@@ -1,15 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TournaCore.API.Models {
-    public class User {
-        public Guid ID { get; set; }
-        public string Email { get; set; } = string.Empty;
-        public string PassHash { get; set; } = string.Empty;
-        public DateTime CD { get; set; }
-        public string CU { get; set; } = string.Empty;
-        public DateTime LD { get; set; } 
-        public string LU { get; set; } = string.Empty;
-    }
+namespace TournaCore.API.Models.DTOs {
     public class LoginRequest {
         [Required]
         [EmailAddress]
@@ -22,7 +13,8 @@ namespace TournaCore.API.Models {
     }
 
     public class LoginResponse {
-        public string AccessToken { get; set; } = string.Empty;
+        public required string AccessToken { get; set; }
+        public required UserResponse User { get; set; }
     }
 
     public class RegisterRequest {
@@ -37,6 +29,12 @@ namespace TournaCore.API.Models {
     }
 
     public class RegisterResponse {
-        public string AccessToken { get; set; } = string.Empty;
+        public required string AccessToken { get; set; }
+        public required UserResponse User { get; set; }
+    }
+
+    public class UserResponse {
+        public required Guid ID { get; set; }
+        public required string Email { get; set; }
     }
 }

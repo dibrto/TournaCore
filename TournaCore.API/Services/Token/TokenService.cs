@@ -2,7 +2,7 @@
 using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
-using TournaCore.API.Models;
+using TournaCore.API.Models.Entity;
 
 namespace TournaCore.API.Servides.Token {
     public class TokenService(IConfiguration configuration) : ITokenService{

@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TournaCore.API.Models;
+using TournaCore.API.Models.DTOs;
 using TournaCore.API.Servides.Auth;
 
 namespace TournaCore.API.Controllers {

@@ -7,7 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using TournaCore.API.Common;
 using TournaCore.API.Data;
-using TournaCore.API.Models;
+using TournaCore.API.Models.DTOs;
 using TournaCore.API.Servides.Auth;
 using TournaCore.API.Servides.Token;
 

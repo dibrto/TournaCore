@@ -7,6 +7,37 @@ using TournaCore.API.Servides.Token;
 
 namespace TournaCore.API.Servides.Auth {
     public class AuthService(TournaCoreDbContext db, ITokenService tokenService) : IAuthService {
+        public async Task<Response<LoginResponse>> Login(LoginRequest req) {
+            var user = await db.sys_Users
+                .SingleOrDefaultAsync(x => x.Email == req.Email);
+
+            if (user == null) {
+                return new Response<LoginResponse> {
+                    Error = new ErrorResponse {
+                        ErrorCode = ErrorCodes.InvalidCredentials,
+                        ErrorMessage = "Invalid credentials"
+                    }
+                };
+            }
+
+            var passwordHasher = new PasswordHasher<User>();
+            var verify = passwordHasher.VerifyHashedPassword(user, user.PassHash, req.Password);
+            if (verify == PasswordVerificationResult.Failed) {
+                return new Response<LoginResponse> {
+                    Error = new ErrorResponse {
+                        ErrorCode = ErrorCodes.InvalidCredentials,
+                        ErrorMessage = "Invalid credentials"
+                    }
+                };
+            }
+
+            return new Response<LoginResponse> {
+                Data = new LoginResponse {
+                    Token = tokenService.GenerateToken(user)
+                }
+            };
+        }
+
         public async Task<Response<RegisterResponse>> Register(RegisterRequest req) {
             var exists = await db.sys_Users
                 .AnyAsync(x => x.Email == req.Email);

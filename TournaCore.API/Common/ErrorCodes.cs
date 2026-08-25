@@ -5,5 +5,6 @@ public static class ErrorCodes {
     public const int ValidationError = 1001;
 
     // Auth 1100-1199
-    public const int EmailAlreadyExists = 1101;
+    public const int InvalidCredentials = 1101;
+    public const int EmailAlreadyExists = 1102;
 }

@@ -10,6 +10,20 @@ namespace TournaCore.API.Models {
         public DateTime LD { get; set; } 
         public string LU { get; set; } = string.Empty;
     }
+    public class LoginRequest {
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; } = string.Empty;
+
+        [Required]
+        [MinLength(4)]
+        [MaxLength(50)]
+        public string Password { get; set; } = string.Empty;
+    }
+
+    public class LoginResponse {
+        public string Token { get; set; } = string.Empty;
+    }
 
     public class RegisterRequest {
         [Required]

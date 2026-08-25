@@ -115,7 +115,12 @@ namespace TournaCore.API {
             if (app.Environment.IsDevelopment()) {
                 app.MapOpenApi();
                 app.UseSwagger();
-                app.UseSwaggerUI();
+                app.UseSwaggerUI(options => {
+                    options.InjectStylesheet(
+                        "data:text/css," +
+                        ".swagger-ui .scheme-container{background:transparent;box-shadow:none}"
+                    );
+                });
             }
 
             app.UseHttpsRedirection();

@@ -1,6 +1,10 @@
 
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi;
 using TournaCore.API.Common;
 using TournaCore.API.Data;
 using TournaCore.API.Models;
@@ -23,7 +27,6 @@ namespace TournaCore.API {
             builder.Services.AddRouting(options => {
                 options.LowercaseUrls = true;
             });
-
 
             // Add services to the container
             builder.Services
@@ -55,12 +58,47 @@ namespace TournaCore.API {
             // api doc
             builder.Services.AddOpenApi();
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(options => {
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header
+                });
+
+                options.AddSecurityRequirement(document =>
+                     new OpenApiSecurityRequirement {
+                         [new OpenApiSecuritySchemeReference("Bearer", document)] = []
+                     }
+                 );
+            });
 
             // health checks
             builder.Services
                 .AddHealthChecks()
                 .AddDbContextCheck<TournaCoreDbContext>();
+
+            // jwt validation
+            var jwtKey = builder.Configuration["Jwt:Key"]!;
+            builder.Services
+                .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options => {
+                    options.TokenValidationParameters = new TokenValidationParameters {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(
+                            Encoding.UTF8.GetBytes(jwtKey)
+                        ),
+
+                        ValidateIssuer = true,
+                        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+
+                        ValidateAudience = true,
+                        ValidAudience = builder.Configuration["Jwt:Audience"],
+
+                        ValidateLifetime = true
+                };
+            });
 
             var app = builder.Build();
 
@@ -72,6 +110,7 @@ namespace TournaCore.API {
             }
 
             app.UseHttpsRedirection();
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllers();

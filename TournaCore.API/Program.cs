@@ -5,6 +5,7 @@ using TournaCore.API.Common;
 using TournaCore.API.Data;
 using TournaCore.API.Models;
 using TournaCore.API.Servides.Auth;
+using TournaCore.API.Servides.Token;
 
 namespace TournaCore.API {
     public class Program {
@@ -49,6 +50,7 @@ namespace TournaCore.API {
                      };
                  });
             builder.Services.AddScoped<IAuthService, AuthService>();
+            builder.Services.AddScoped<ITokenService, TokenService>();
 
             // api doc
             builder.Services.AddOpenApi();

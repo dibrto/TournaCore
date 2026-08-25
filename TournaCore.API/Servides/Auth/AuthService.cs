@@ -3,9 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using TournaCore.API.Common;
 using TournaCore.API.Data;
 using TournaCore.API.Models;
+using TournaCore.API.Servides.Token;
 
 namespace TournaCore.API.Servides.Auth {
-    public class AuthService(TournaCoreDbContext db) : IAuthService {
+    public class AuthService(TournaCoreDbContext db, ITokenService tokenService) : IAuthService {
         public async Task<Response<RegisterResponse>> Register(RegisterRequest req) {
             var exists = await db.sys_Users
                 .AnyAsync(x => x.Email == req.Email);
@@ -38,7 +39,7 @@ namespace TournaCore.API.Servides.Auth {
 
             return new Response<RegisterResponse> {
                 Data = new RegisterResponse {
-                    Token = "111" //temp
+                    Token = tokenService.GenerateToken(user)
                 }
             };
         }

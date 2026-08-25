@@ -1,17 +1,22 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using TournaCore.API.Common;
 using TournaCore.API.Data;
 using TournaCore.API.Models;
 
 namespace TournaCore.API.Servides.Auth {
     public class AuthService(TournaCoreDbContext db) : IAuthService {
-        public async Task<RegisterResponse?> Register(RegisterRequest req) {
+        public async Task<Response<RegisterResponse>> Register(RegisterRequest req) {
             var exists = await db.sys_Users
                 .AnyAsync(x => x.Email == req.Email);
 
             if (exists) {
-                // email already exists
-                return null;
+                return new Response<RegisterResponse> {
+                   Error = new ErrorResponse { 
+                        ErrorCode = ErrorCodes.EmailAlreadyExists,
+                        ErrorMessage = "Email already exists"
+                    }
+                };
             }
 
             var now = DateTime.Now;
@@ -31,7 +36,11 @@ namespace TournaCore.API.Servides.Auth {
             db.sys_Users.Add(user);
             await db.SaveChangesAsync();
 
-            return new RegisterResponse { Token = "111" }; //temp
+            return new Response<RegisterResponse> {
+                Data = new RegisterResponse {
+                    Token = "111" //temp
+                }
+            };
         }
     }
 }

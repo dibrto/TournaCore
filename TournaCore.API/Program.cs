@@ -1,6 +1,9 @@
 
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using TournaCore.API.Common;
 using TournaCore.API.Data;
+using TournaCore.API.Models;
 using TournaCore.API.Servides.Auth;
 
 namespace TournaCore.API {
@@ -21,8 +24,30 @@ namespace TournaCore.API {
             });
 
 
-            // Add services to the container.
-            builder.Services.AddControllers();
+            // Add services to the container
+            builder.Services
+                .AddControllers(options => options.Filters.Add(new ProducesAttribute("application/json")))
+                // validation return type conf
+                .ConfigureApiBehaviorOptions(options => {
+                     options.InvalidModelStateResponseFactory = context => {
+                         var errors = context.ModelState
+                             .Where(x => x.Value?.Errors.Count > 0)
+                             .ToDictionary(
+                                 x => x.Key,
+                                 x => x.Value!.Errors
+                                     .Select(e => e.ErrorMessage)
+                                     .ToArray()
+                             );
+
+                         var response = new ValidationErrorResponse {
+                             ErrorCode = ErrorCodes.ValidationError,
+                             ErrorMessage = "Validation failed",
+                             Errors = errors
+                         };
+
+                         return new BadRequestObjectResult(response);
+                     };
+                 });
             builder.Services.AddScoped<IAuthService, AuthService>();
 
             // api doc

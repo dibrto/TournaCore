@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using TournaCore.API.Common;
 using TournaCore.API.Data;
+using TournaCore.API.Exceptions;
 using TournaCore.API.Models.DTOs;
 using TournaCore.API.Models.Entities;
 using TournaCore.API.Servides.Token;
@@ -20,25 +21,15 @@ namespace TournaCore.API.Servides.Auth {
                 """)
                 .SingleOrDefaultAsync();
 
-            if (user == null) {
-                return new Response<LoginResponse> {
-                    Error = new ErrorResponse {
-                        ErrorCode = ErrorCodes.InvalidCredentials,
-                        ErrorMessage = "Invalid credentials"
-                    }
-                };
-            }
-
+            // check user exists
+            if (user is null)
+                throw new AppException(401, ErrorCodes.InvalidCredentials, "Invalid credentials");
+            
+            // check passsword
             var passwordHasher = new PasswordHasher<User>();
             var verify = passwordHasher.VerifyHashedPassword(user, user.PassHash, req.Password);
-            if (verify == PasswordVerificationResult.Failed) {
-                return new Response<LoginResponse> {
-                    Error = new ErrorResponse {
-                        ErrorCode = ErrorCodes.InvalidCredentials,
-                        ErrorMessage = "Invalid credentials"
-                    }
-                };
-            }
+            if (verify == PasswordVerificationResult.Failed)
+                throw new AppException(401, ErrorCodes.InvalidCredentials, "Invalid credentials");
 
             return new Response<LoginResponse> {
                 Data = new LoginResponse {
@@ -55,20 +46,17 @@ namespace TournaCore.API.Servides.Auth {
             var exists = await db.sys_Users
                 .AnyAsync(x => x.Email == req.Email);
 
-            if (exists) {
-                return new Response<RegisterResponse> {
-                   Error = new ErrorResponse { 
-                        ErrorCode = ErrorCodes.EmailAlreadyExists,
-                        ErrorMessage = "Email already exists"
-                    }
-                };
-            }
+            // check user exists
+            if (exists)
+                throw new AppException(409, ErrorCodes.EmailAlreadyExists, "Email already exists");            
 
-            // get role
+            // prepare data
             Role role = await db.sys_Roles
                 .FirstAsync(r => r.Name == "Player");
 
             var now = DateTime.Now;
+
+            // make user
             var user = new User {
                 ID = Guid.NewGuid(),
                 Email = req.Email,

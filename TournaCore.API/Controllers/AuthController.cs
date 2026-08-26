@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using TournaCore.API.Common;
+using TournaCore.API.Common.Swagger;
 using TournaCore.API.Models.DTOs;
 using TournaCore.API.Servides.Auth;
 
@@ -8,8 +10,8 @@ namespace TournaCore.API.Controllers {
     [ApiController]
     public class AuthController(IAuthService service) : ControllerBase {
         [HttpPost("login")]
-        [ProducesResponseType(typeof(void), 401, Description = "Error codes: 1101 - Invalid credentials")]
-        [ProducesResponseType(typeof(void), 422, Description = "Validation error")]
+        [ProducesAppError(nameof(ErrorCodes.InvalidCredentials))]
+        [ProducesAppError(nameof(ErrorCodes.ValidationError))]
         public async Task<Ok<LoginResponse>> Login(LoginRequest req) {
             var res = await service.Login(req);
 
@@ -17,8 +19,8 @@ namespace TournaCore.API.Controllers {
         }
 
         [HttpPost("register")]
-        [ProducesResponseType(typeof(void), 409, Description = "Error codes: 1102 - Email alreday exists")]
-        [ProducesResponseType(typeof(void), 422, Description = "Validation error")]
+        [ProducesAppError(nameof(ErrorCodes.EmailAlreadyExists))]
+        [ProducesAppError(nameof(ErrorCodes.ValidationError))]
         public async Task<Ok<RegisterResponse>> Register (RegisterRequest req) {
             var res = await service.Register(req);          
 

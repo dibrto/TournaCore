@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using TournaCore.API.Common;
+using TournaCore.API.Common.Swagger;
 using TournaCore.API.Data;
 using TournaCore.API.Exceptions;
 using TournaCore.API.Models.DTOs;
@@ -84,6 +85,8 @@ namespace TournaCore.API {
                        For error codes and response formats, see [Error documentation](https://github.com/dibrto/TournaCore/blob/master/TournaCore.API/Docs/errors.md).
                     """
                 });
+
+                options.OperationFilter<AppErrorOperationFilter>();
             });
 
             // health checks

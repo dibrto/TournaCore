@@ -46,8 +46,8 @@ namespace TournaCore.API {
                              );
 
                          var response = new ValidationErrorResponse {
-                             ErrorCode = ErrorCodes.ValidationError,
-                             ErrorMessage = "Validation failed",
+                             ErrorCode = ErrorCodes.ValidationError.ErrorCode,
+                             ErrorMessage = ErrorCodes.ValidationError.ErrorMessage,
                              Errors = errors
                          };
 

@@ -10,16 +10,14 @@ namespace TournaCore.API.Services.User {
             var user = await db.sys_Users
                 .SingleOrDefaultAsync(u => u.ID == id);
 
-            if (user is null) {
-                throw new AppException(404, ErrorCodes.UserNotFound, "User doesn't exist.");
-            }
+            if (user is null) 
+                throw new AppException(ErrorCodes.UserNotFound);
 
             var role = await db.sys_Roles
                 .SingleOrDefaultAsync(r => r.ID == req.Role_ID);
 
-            if (role is null) {
-                throw new AppException(404, ErrorCodes.UserRoleNotFound, "User role doesn't exist.");
-            }
+            if (role is null)
+                throw new AppException(ErrorCodes.UserRoleNotFound);
 
             user.Role_ID = role.ID;
             await db.SaveChangesAsync();

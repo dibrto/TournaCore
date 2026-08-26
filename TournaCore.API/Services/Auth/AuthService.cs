@@ -23,13 +23,13 @@ namespace TournaCore.API.Servides.Auth {
 
             // check user exists
             if (user is null)
-                throw new AppException(401, ErrorCodes.InvalidCredentials, "Invalid credentials");
+                throw new AppException(ErrorCodes.InvalidCredentials);
             
             // check passsword
             var passwordHasher = new PasswordHasher<User>();
             var verify = passwordHasher.VerifyHashedPassword(user, user.PassHash, req.Password);
             if (verify == PasswordVerificationResult.Failed)
-                throw new AppException(401, ErrorCodes.InvalidCredentials, "Invalid credentials");
+               throw new AppException(ErrorCodes.InvalidCredentials);
 
             return new Response<LoginResponse> {
                 Data = new LoginResponse {
@@ -48,7 +48,7 @@ namespace TournaCore.API.Servides.Auth {
 
             // check user exists
             if (exists)
-                throw new AppException(409, ErrorCodes.EmailAlreadyExists, "Email already exists");            
+                throw new AppException(ErrorCodes.EmailAlreadyExists);
 
             // prepare data
             Role role = await db.sys_Roles

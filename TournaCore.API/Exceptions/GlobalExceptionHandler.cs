@@ -7,12 +7,12 @@ namespace TournaCore.API.Exceptions {
         public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken) {
             if (exception is AppException appException) {
 
-                httpContext.Response.StatusCode = appException.StatusCode;
+                httpContext.Response.StatusCode = appException.Error.HttpCode;
 
                 await httpContext.Response.WriteAsJsonAsync(
                     new ErrorResponse {
-                        ErrorCode = appException.ErrorCode,
-                        ErrorMessage = appException.Message
+                        ErrorCode = appException.Error.ErrorCode,
+                        ErrorMessage = appException.Error.ErrorMessage
                     },
                     cancellationToken
                 );

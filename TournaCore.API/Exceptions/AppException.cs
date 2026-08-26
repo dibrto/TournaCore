@@ -1,6 +1,7 @@
-﻿namespace TournaCore.API.Exceptions {
-    public class AppException(int statusCode, int errorCode, string errorMessage) : Exception(errorMessage) {                
-        public int StatusCode { get; } = statusCode;
-        public int ErrorCode { get; } = errorCode;
+﻿using TournaCore.API.Common;
+
+namespace TournaCore.API.Exceptions {
+    public class AppException(AppError error) : Exception(error.ErrorMessage) {
+        public AppError Error { get; } = error;
     }
 }

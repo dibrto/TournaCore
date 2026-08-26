@@ -9,8 +9,16 @@ using TournaCore.API.Servides.Token;
 namespace TournaCore.API.Servides.Auth {
     public class AuthService(TournaCoreDbContext db, ITokenService tokenService) : IAuthService {
         public async Task<Response<LoginResponse>> Login(LoginRequest req) {
-            var user = await db.sys_Users
-                .SingleOrDefaultAsync(x => x.Email == req.Email);
+            var user = await db.Database
+                .SqlQuery<LoginQuery>($"""
+                    SELECT      u.*
+                                , r.Name        AS RoleName
+                    FROM        sys_Users u
+                    JOIN        sys_Roles r
+                    ON          r.ID = u.Role_ID
+                    WHERE       u.Email = {req.Email}
+                """)
+                .SingleOrDefaultAsync();
 
             if (user == null) {
                 return new Response<LoginResponse> {
@@ -34,7 +42,7 @@ namespace TournaCore.API.Servides.Auth {
 
             return new Response<LoginResponse> {
                 Data = new LoginResponse {
-                    AccessToken = tokenService.GenerateToken(user),
+                    AccessToken = tokenService.GenerateToken(user, user.RoleName),
                     User = new UserResponse { 
                         ID = user.ID,
                         Email  = user.Email
@@ -57,18 +65,15 @@ namespace TournaCore.API.Servides.Auth {
             }
 
             // get role
-            var role_ID = await db.sys_Roles
-                .Where(r => r.Name == "Player")
-                .Select(r => r.ID)
-                .FirstAsync();
+            Role role = await db.sys_Roles
+                .FirstAsync(r => r.Name == "Player");
 
-            Console.WriteLine(role_ID);
             var now = DateTime.Now;
             var user = new User {
                 ID = Guid.NewGuid(),
                 Email = req.Email,
                 Username = req.Username,
-                Role_ID = role_ID,
+                Role_ID = role.ID,
                 
                 CD = now,
                 CU = "system",
@@ -83,7 +88,7 @@ namespace TournaCore.API.Servides.Auth {
 
             return new Response<RegisterResponse> {
                 Data = new RegisterResponse {
-                    AccessToken = tokenService.GenerateToken(user),
+                    AccessToken = tokenService.GenerateToken(user, role.Name),
                     User = new UserResponse {
                         ID = user.ID,
                         Email = user.Email

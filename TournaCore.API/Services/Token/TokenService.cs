@@ -6,7 +6,7 @@ using TournaCore.API.Models.Entities;
 
 namespace TournaCore.API.Servides.Token {
     public class TokenService(IConfiguration configuration) : ITokenService{
-        public string GenerateToken(User user) {
+        public string GenerateToken(User user, string roleName) {
             var key = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(
                     configuration["Jwt:Key"]!
@@ -27,6 +27,11 @@ namespace TournaCore.API.Servides.Token {
                 new Claim(
                     ClaimTypes.Email,
                     user.Email
+                ),
+
+                new Claim(
+                    ClaimTypes.Role,
+                    roleName
                 )
             };
 

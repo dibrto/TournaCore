@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using TournaCore.API.Models.Entities;
 
 namespace TournaCore.API.Models.DTOs {
     public class LoginRequest {
@@ -15,6 +16,10 @@ namespace TournaCore.API.Models.DTOs {
     public class LoginResponse {
         public required string AccessToken { get; set; }
         public required UserResponse User { get; set; }
+    }
+
+    public class LoginQuery : User {
+        public string RoleName { get; set; } = string.Empty;
     }
 
     public class RegisterRequest {

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using TournaCore.API.Common;
 using TournaCore.API.Data;
 using TournaCore.API.Models.DTOs;
-using TournaCore.API.Models.Entity;
+using TournaCore.API.Models.Entities;
 using TournaCore.API.Servides.Token;
 
 namespace TournaCore.API.Servides.Auth {
@@ -56,14 +56,22 @@ namespace TournaCore.API.Servides.Auth {
                 };
             }
 
+            // get role
+            var role_ID = await db.sys_Roles
+                .Where(r => r.Name == "Player")
+                .Select(r => r.ID)
+                .FirstAsync();
+
+            Console.WriteLine(role_ID);
             var now = DateTime.Now;
             var user = new User {
                 ID = Guid.NewGuid(),
-                Email = req.Email,                
-
+                Email = req.Email,
+                Username = req.Username,
+                Role_ID = role_ID,
+                
                 CD = now,
                 CU = "system",
-
                 LD = now,
                 LU = "system"
             };

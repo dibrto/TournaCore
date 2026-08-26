@@ -1,4 +1,4 @@
-﻿using TournaCore.API.Models.Entity;
+﻿using TournaCore.API.Models.Entities;
 
 namespace TournaCore.API.Servides.Token {
     public interface ITokenService {

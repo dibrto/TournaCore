@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TournaCore.API.Models.Entity;
+using TournaCore.API.Models.Entities;
 
 namespace TournaCore.API.Data {
     public class TournaCoreDbContext : DbContext {
         public TournaCoreDbContext(DbContextOptions<TournaCoreDbContext> options): base(options) {}
         public DbSet<User> sys_Users { get; set; }
+        public DbSet<Role> sys_Roles { get; set; }
     }
 }

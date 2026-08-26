@@ -9,8 +9,11 @@ namespace TournaCore.API.Models.DTOs {
     public class ErrorResponse {
         [DefaultValue(0)]
         public required int ErrorCode { get; set; }
-
         public required string ErrorMessage { get; set; }
+    }
+
+    public class ServerErrorResponse : ErrorResponse { 
+        public string? StackTrace { get; set; }
     }
 
     public class ValidationErrorResponse : ErrorResponse {

@@ -7,7 +7,9 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using TournaCore.API.Common;
 using TournaCore.API.Data;
+using TournaCore.API.Exceptions;
 using TournaCore.API.Models.DTOs;
+using TournaCore.API.Services.User;
 using TournaCore.API.Servides.Auth;
 using TournaCore.API.Servides.Token;
 
@@ -54,6 +56,7 @@ namespace TournaCore.API {
                  });
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<ITokenService, TokenService>();
+            builder.Services.AddScoped<IUserService, UserService>();
 
             // api doc
             builder.Services.AddOpenApi();
@@ -109,6 +112,9 @@ namespace TournaCore.API {
                 };
             });
 
+            builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+            builder.Services.AddProblemDetails();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -122,6 +128,8 @@ namespace TournaCore.API {
                     );
                 });
             }
+
+            app.UseExceptionHandler();
 
             app.UseHttpsRedirection();
             app.UseAuthentication();

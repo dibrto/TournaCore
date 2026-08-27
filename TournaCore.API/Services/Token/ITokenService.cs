@@ -2,6 +2,6 @@
 
 namespace TournaCore.API.Services.Token {
     public interface ITokenService {
-        string GenerateToken(User user, string roleName);
+        string GenerateToken(Guid id, string email, string roleName);
     }
 }

@@ -2,11 +2,10 @@
 using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
-using TournaCore.API.Models.Entities;
 
 namespace TournaCore.API.Services.Token {
     public class TokenService(IConfiguration configuration) : ITokenService{
-        public string GenerateToken(User user, string roleName) {
+        public string GenerateToken(Guid id, string email, string roleName) {
             var key = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(
                     configuration["Jwt:Key"]!
@@ -19,20 +18,11 @@ namespace TournaCore.API.Services.Token {
             );
 
             var claims = new[] {
-                new Claim(
-                    ClaimTypes.NameIdentifier,
-                    user.ID.ToString()
-                ),
+                new Claim(ClaimTypes.NameIdentifier, id.ToString()),
 
-                new Claim(
-                    ClaimTypes.Email,
-                    user.Email
-                ),
+                new Claim(ClaimTypes.Email, email),
 
-                new Claim(
-                    ClaimTypes.Role,
-                    roleName
-                )
+                new Claim(ClaimTypes.Role, roleName)
             };
 
             var token = new JwtSecurityToken(

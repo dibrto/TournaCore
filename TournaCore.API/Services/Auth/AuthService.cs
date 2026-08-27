@@ -10,30 +10,21 @@ using TournaCore.API.Services.Token;
 namespace TournaCore.API.Services.Auth {
     public class AuthService(TournaCoreDbContext db, ITokenService tokenService) : IAuthService {
         public async Task<Response<LoginResponse>> Login(LoginRequest req) {
-            var user = await db.Database
-                .SqlQuery<LoginQuery>($"""
-                    SELECT      u.*
-                                , r.Name        AS RoleName
-                    FROM        sys_Users u
-                    JOIN        sys_Roles r
-                    ON          r.ID = u.Role_ID
-                    WHERE       u.Email = {req.Email}
-                """)
-                .SingleOrDefaultAsync();
+            var user = await db.v_sys_Users.SingleOrDefaultAsync(u => u.Email == req.Email);
 
             // check user exists
             if (user is null)
                 throw new AppException(ErrorCodes.InvalidCredentials);
             
             // check passsword
-            var passwordHasher = new PasswordHasher<User>();
+            var passwordHasher = new PasswordHasher<v_sys_User>();
             var verify = passwordHasher.VerifyHashedPassword(user, user.PassHash, req.Password);
             if (verify == PasswordVerificationResult.Failed)
                throw new AppException(ErrorCodes.InvalidCredentials);
 
             return new Response<LoginResponse> {
                 Data = new LoginResponse {
-                    AccessToken = tokenService.GenerateToken(user, user.RoleName),
+                    AccessToken = tokenService.GenerateToken(user.ID, user.Email, user.RoleName),
                     User = new UserResponse { 
                         ID = user.ID,
                         Email  = user.Email
@@ -51,13 +42,13 @@ namespace TournaCore.API.Services.Auth {
                 throw new AppException(ErrorCodes.EmailAlreadyExists);
 
             // prepare data
-            Role role = await db.sys_Roles
+            var role = await db.sys_Roles
                 .FirstAsync(r => r.Name == "Player");
 
             var now = DateTime.Now;
 
             // make user
-            var user = new User {
+            var user = new sys_User {
                 ID = Guid.NewGuid(),
                 Email = req.Email,
                 Username = req.Username,
@@ -68,7 +59,7 @@ namespace TournaCore.API.Services.Auth {
                 LD = now,
                 LU = "system"
             };
-            var passwordHasher = new PasswordHasher<User>();
+            var passwordHasher = new PasswordHasher<sys_User>();
             user.PassHash = passwordHasher.HashPassword(user, req.Password);
 
             db.sys_Users.Add(user);
@@ -76,7 +67,7 @@ namespace TournaCore.API.Services.Auth {
 
             return new Response<RegisterResponse> {
                 Data = new RegisterResponse {
-                    AccessToken = tokenService.GenerateToken(user, role.Name),
+                    AccessToken = tokenService.GenerateToken(user.ID, user.Email, role.Name),
                     User = new UserResponse {
                         ID = user.ID,
                         Email = user.Email

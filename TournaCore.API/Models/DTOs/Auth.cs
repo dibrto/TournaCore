@@ -18,10 +18,6 @@ namespace TournaCore.API.Models.DTOs {
         public required UserResponse User { get; set; }
     }
 
-    public class LoginQuery : User {
-        public string RoleName { get; set; } = string.Empty;
-    }
-
     public class RegisterRequest {
         [Required]
         [EmailAddress]

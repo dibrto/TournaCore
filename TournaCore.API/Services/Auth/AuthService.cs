@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using TournaCore.API.Common;
 using TournaCore.API.Data;
 using TournaCore.API.Exceptions;
-using TournaCore.API.Models.DTOs;
+using TournaCore.API.Models.DTOs.Auth;
 using TournaCore.API.Models.Entities;
 using TournaCore.API.Services.Token;
 

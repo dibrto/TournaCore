@@ -1,4 +1,4 @@
-﻿using TournaCore.API.Models.DTOs;
+﻿using TournaCore.API.Models.DTOs.Auth;
 
 namespace TournaCore.API.Services.Auth {
     public interface IAuthService {

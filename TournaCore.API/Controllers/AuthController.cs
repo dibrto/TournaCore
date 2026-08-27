@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using TournaCore.API.Common;
 using TournaCore.API.Common.Swagger;
-using TournaCore.API.Models.DTOs;
+using TournaCore.API.Models.DTOs.Auth;
 using TournaCore.API.Services.Auth;
 
 namespace TournaCore.API.Controllers {

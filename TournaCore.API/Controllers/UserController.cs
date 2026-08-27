@@ -14,6 +14,8 @@ namespace TournaCore.API.Controllers {
         [HttpPatch("{id:guid}/role")]
         [ProducesAppError(nameof(ErrorCodes.UserNotFound))]
         [ProducesAppError(nameof(ErrorCodes.UserRoleNotFound))]
+        [ProducesAppError(nameof(ErrorCodes.CannotModifyAdmin))]
+        [ProducesAppError(nameof(ErrorCodes.CannotAssignAdminRole))]
         public async Task<NoContent> PatchRole(Guid id, ChangeUserRoleRequest req) {
             await service.ChangeUserRole(id, req);
 

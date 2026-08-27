@@ -15,4 +15,6 @@ public static class ErrorCodes {
     public static readonly AppError EmailAlreadyExists = new(409, 1102, "Email already exists");
     public static readonly AppError UserNotFound = new(404, 1103, "User doesn't exist");
     public static readonly AppError UserRoleNotFound = new(404, 1104, "User role doesn't exist");
+    public static readonly AppError CannotModifyAdmin = new(403, 1105, "Admin role cannot be changed");
+    public static readonly AppError CannotAssignAdminRole = new(403, 1106, "Admin role cannot be assigned");
 }

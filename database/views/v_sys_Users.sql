@@ -12,9 +12,6 @@ AS
 
 	Data-access view for v_sys_Users
 
-	Modifications:  	
-	  20260827	DIBR	Initial implementation
-
 */------------------------------------------------------------------------
 
 SELECT		u.ID

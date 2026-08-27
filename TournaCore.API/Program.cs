@@ -11,8 +11,8 @@ using TournaCore.API.Data;
 using TournaCore.API.Exceptions;
 using TournaCore.API.Models.DTOs;
 using TournaCore.API.Services.Users;
-using TournaCore.API.Servides.Auth;
-using TournaCore.API.Servides.Token;
+using TournaCore.API.Services.Auth;
+using TournaCore.API.Services.Token;
 
 namespace TournaCore.API {
     public class Program {

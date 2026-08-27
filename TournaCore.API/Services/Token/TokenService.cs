@@ -4,7 +4,7 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using TournaCore.API.Models.Entities;
 
-namespace TournaCore.API.Servides.Token {
+namespace TournaCore.API.Services.Token {
     public class TokenService(IConfiguration configuration) : ITokenService{
         public string GenerateToken(User user, string roleName) {
             var key = new SymmetricSecurityKey(

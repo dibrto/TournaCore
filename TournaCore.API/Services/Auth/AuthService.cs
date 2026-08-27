@@ -5,9 +5,9 @@ using TournaCore.API.Data;
 using TournaCore.API.Exceptions;
 using TournaCore.API.Models.DTOs;
 using TournaCore.API.Models.Entities;
-using TournaCore.API.Servides.Token;
+using TournaCore.API.Services.Token;
 
-namespace TournaCore.API.Servides.Auth {
+namespace TournaCore.API.Services.Auth {
     public class AuthService(TournaCoreDbContext db, ITokenService tokenService) : IAuthService {
         public async Task<Response<LoginResponse>> Login(LoginRequest req) {
             var user = await db.Database

@@ -10,20 +10,22 @@ using TournaCore.API.Services.Token;
 namespace TournaCore.API.Services.Auth {
     public class AuthService(TournaCoreDbContext db, ITokenService tokenService) : IAuthService {
         public async Task<LoginResponse> Login(LoginRequest req) {
-            var user = await db.v_sys_Users.SingleOrDefaultAsync(u => u.Email == req.Email);
+            var user = await db.sys_Users
+                .Include(u => u.Role)
+                .SingleOrDefaultAsync(u => u.Email == req.Email);
 
             // check user exists
             if (user is null)
                 throw new AppException(ErrorCodes.InvalidCredentials);
             
             // check passsword
-            var passwordHasher = new PasswordHasher<v_sys_User>();
+            var passwordHasher = new PasswordHasher<sys_User>();
             var verify = passwordHasher.VerifyHashedPassword(user, user.PassHash, req.Password);
             if (verify == PasswordVerificationResult.Failed)
                throw new AppException(ErrorCodes.InvalidCredentials);
 
             return new LoginResponse {
-                AccessToken = tokenService.GenerateToken(user.ID, user.Email, user.RoleName),
+                AccessToken = tokenService.GenerateToken(user.ID, user.Email, user.Role.Name),
                 User = new UserResponse { 
                     ID = user.ID,
                     Email  = user.Email

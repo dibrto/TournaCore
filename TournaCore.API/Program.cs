@@ -10,7 +10,7 @@ using TournaCore.API.Common.Swagger;
 using TournaCore.API.Data;
 using TournaCore.API.Exceptions;
 using TournaCore.API.Models.DTOs;
-using TournaCore.API.Services.User;
+using TournaCore.API.Services.Users;
 using TournaCore.API.Servides.Auth;
 using TournaCore.API.Servides.Token;
 

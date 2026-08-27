@@ -4,7 +4,7 @@ using TournaCore.API.Data;
 using TournaCore.API.Exceptions;
 using TournaCore.API.Models.DTOs;
 
-namespace TournaCore.API.Services.User {
+namespace TournaCore.API.Services.Users {
     public class UserService(TournaCoreDbContext db) : IUserService {
         public async Task ChangeUserRole(Guid id, ChangeUserRoleRequest req) {
             var user = await db.sys_Users

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using TournaCore.API.Common;
 using TournaCore.API.Common.Swagger;
 using TournaCore.API.Models.DTOs;
-using TournaCore.API.Services.User;
+using TournaCore.API.Services.Users;
 
 namespace TournaCore.API.Controllers {
     [Route("api/v1/[controller]")]

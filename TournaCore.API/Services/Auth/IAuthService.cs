@@ -2,7 +2,7 @@
 
 namespace TournaCore.API.Services.Auth {
     public interface IAuthService {
-        public Task<Response<LoginResponse>> Login(LoginRequest req);
-        public Task<Response<RegisterResponse>> Register(RegisterRequest req);
+        public Task<LoginResponse> Login(LoginRequest req);
+        public Task<RegisterResponse> Register(RegisterRequest req);
     }
 }

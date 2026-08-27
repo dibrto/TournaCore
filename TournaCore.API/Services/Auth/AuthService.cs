@@ -9,7 +9,7 @@ using TournaCore.API.Services.Token;
 
 namespace TournaCore.API.Services.Auth {
     public class AuthService(TournaCoreDbContext db, ITokenService tokenService) : IAuthService {
-        public async Task<Response<LoginResponse>> Login(LoginRequest req) {
+        public async Task<LoginResponse> Login(LoginRequest req) {
             var user = await db.v_sys_Users.SingleOrDefaultAsync(u => u.Email == req.Email);
 
             // check user exists
@@ -22,18 +22,16 @@ namespace TournaCore.API.Services.Auth {
             if (verify == PasswordVerificationResult.Failed)
                throw new AppException(ErrorCodes.InvalidCredentials);
 
-            return new Response<LoginResponse> {
-                Data = new LoginResponse {
-                    AccessToken = tokenService.GenerateToken(user.ID, user.Email, user.RoleName),
-                    User = new UserResponse { 
-                        ID = user.ID,
-                        Email  = user.Email
-                    }
-                }
+            return new LoginResponse {
+                AccessToken = tokenService.GenerateToken(user.ID, user.Email, user.RoleName),
+                User = new UserResponse { 
+                    ID = user.ID,
+                    Email  = user.Email
+                }                
             };
         }
 
-        public async Task<Response<RegisterResponse>> Register(RegisterRequest req) {
+        public async Task<RegisterResponse> Register(RegisterRequest req) {
             var exists = await db.sys_Users
                 .AnyAsync(x => x.Email == req.Email);
 
@@ -65,13 +63,11 @@ namespace TournaCore.API.Services.Auth {
             db.sys_Users.Add(user);
             await db.SaveChangesAsync();
 
-            return new Response<RegisterResponse> {
-                Data = new RegisterResponse {
-                    AccessToken = tokenService.GenerateToken(user.ID, user.Email, role.Name),
-                    User = new UserResponse {
-                        ID = user.ID,
-                        Email = user.Email
-                    }
+            return new RegisterResponse {
+                AccessToken = tokenService.GenerateToken(user.ID, user.Email, role.Name),
+                User = new UserResponse {
+                    ID = user.ID,
+                    Email = user.Email
                 }
             };
         }

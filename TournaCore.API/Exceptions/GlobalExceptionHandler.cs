@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
 using TournaCore.API.Common;
-using TournaCore.API.Models.DTOs;
+using TournaCore.API.Models.DTOs.Common;
 
 namespace TournaCore.API.Exceptions {
     public class GlobalExceptionHandler : IExceptionHandler {

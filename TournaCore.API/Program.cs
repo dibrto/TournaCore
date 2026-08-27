@@ -9,10 +9,10 @@ using TournaCore.API.Common;
 using TournaCore.API.Common.Swagger;
 using TournaCore.API.Data;
 using TournaCore.API.Exceptions;
-using TournaCore.API.Models.DTOs;
 using TournaCore.API.Services.Users;
 using TournaCore.API.Services.Auth;
 using TournaCore.API.Services.Token;
+using TournaCore.API.Models.DTOs.Common;
 
 namespace TournaCore.API {
     public class Program {

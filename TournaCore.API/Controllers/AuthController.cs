@@ -15,7 +15,7 @@ namespace TournaCore.API.Controllers {
         public async Task<Ok<LoginResponse>> Login(LoginRequest req) {
             var res = await service.Login(req);
 
-            return TypedResults.Ok(res.Data);
+            return TypedResults.Ok(res);
         }
 
         [HttpPost("register")]
@@ -24,7 +24,7 @@ namespace TournaCore.API.Controllers {
         public async Task<Ok<RegisterResponse>> Register (RegisterRequest req) {
             var res = await service.Register(req);          
 
-            return TypedResults.Ok(res.Data);
+            return TypedResults.Ok(res);
         }
     }
 }

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using TournaCore.API.Common;
 using TournaCore.API.Common.Swagger;
-using TournaCore.API.Models.DTOs;
+using TournaCore.API.Models.DTOs.User;
 using TournaCore.API.Services.Users;
 
 namespace TournaCore.API.Controllers {

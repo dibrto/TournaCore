@@ -2,7 +2,7 @@
 using TournaCore.API.Common;
 using TournaCore.API.Data;
 using TournaCore.API.Exceptions;
-using TournaCore.API.Models.DTOs;
+using TournaCore.API.Models.DTOs.User;
 
 namespace TournaCore.API.Services.Users {
     public class UserService(TournaCoreDbContext db) : IUserService {

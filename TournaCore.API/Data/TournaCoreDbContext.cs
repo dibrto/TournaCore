@@ -18,8 +18,6 @@ public partial class TournaCoreDbContext : DbContext
 
     public virtual DbSet<sys_User> sys_Users { get; set; }
 
-    public virtual DbSet<v_sys_User> v_sys_Users { get; set; }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<sys_Role>(entity =>
@@ -48,11 +46,6 @@ public partial class TournaCoreDbContext : DbContext
             entity.Property(e => e.ID).ValueGeneratedNever();
 
             entity.HasOne(d => d.Role).WithMany(p => p.sys_Users).OnDelete(DeleteBehavior.ClientSetNull);
-        });
-
-        modelBuilder.Entity<v_sys_User>(entity =>
-        {
-            entity.ToView("v_sys_Users");
         });
 
         OnModelCreatingPartial(modelBuilder);

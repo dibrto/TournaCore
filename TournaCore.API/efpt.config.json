@@ -25,10 +25,6 @@
       {
          "Name": "[dbo].[sys_Users]",
          "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[v_sys_Users]",
-         "ObjectType": 3
       }
    ],
    "UiHint": null,

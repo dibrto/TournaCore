@@ -109,3 +109,39 @@ BEGIN
 	END
 END
 GO
+
+IF	OBJECT_ID('trm_Tournaments') IS NULL
+BEGIN
+	----------------------------------------------------------------------------------------
+	RAISERROR ('20260831: Add table trm_Tournaments', 10, 1) WITH NOWAIT
+	----------------------------------------------------------------------------------------
+
+	IF @@TRANCOUNT > 0 ROLLBACK BEGIN TRAN
+	DECLARE		@ERR INT
+	SET			@ERR = 0
+
+	CREATE TABLE trm_Tournaments (
+				  ID		UNIQUEIDENTIFIER	NOT NULL
+				, Name		NVARCHAR(50)		NOT NULL
+				, StartDate	DATETIME2(3)		NOT NULL
+				, EndDate	DATETIME2(3)		NOT NULL
+
+				, CD		DATETIME2(3)		NOT NULL
+				, CU		NVARCHAR(255)		NOT NULL
+				, LD		DATETIME2(3)		NOT NULL
+				, LU		NVARCHAR(255)		NOT NULL
+
+				, CONSTRAINT PK_trm_Tournaments_ID PRIMARY KEY NONCLUSTERED (ID)
+				, CONSTRAINT CL_trm_Tournaments_ID UNIQUE CLUSTERED (ID)
+	)
+	SET			@ERR = @ERR+@@ERROR
+
+	IF @ERR = 0 BEGIN
+		PRINT 'OK: ' + CONVERT(VARCHAR, @@TRANCOUNT) + ', ' + { fn CURRENT_TIME() }
+		COMMIT
+	END ELSE BEGIN
+		PRINT '!!!!!!!!!!!!! Err: ' + CONVERT(VARCHAR, @ERR) + ' !!!!!!!!!!!!!!!!!!!' + ', ' + CONVERT(VARCHAR, GETDATE(), 121)
+		ROLLBACK
+	END
+END
+GO

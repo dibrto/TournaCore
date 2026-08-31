@@ -18,6 +18,8 @@ public partial class TournaCoreDbContext : DbContext
 
     public virtual DbSet<sys_User> sys_Users { get; set; }
 
+    public virtual DbSet<trm_Tournament> trm_Tournaments { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<sys_Role>(entity =>
@@ -46,6 +48,19 @@ public partial class TournaCoreDbContext : DbContext
             entity.Property(e => e.ID).ValueGeneratedNever();
 
             entity.HasOne(d => d.Role).WithMany(p => p.sys_Users).OnDelete(DeleteBehavior.ClientSetNull);
+        });
+
+        modelBuilder.Entity<trm_Tournament>(entity =>
+        {
+            entity.HasKey(e => e.ID)
+                .HasName("PK_trm_Tournaments_ID")
+                .IsClustered(false);
+
+            entity.HasIndex(e => e.ID, "CL_trm_Tournaments_ID")
+                .IsUnique()
+                .IsClustered();
+
+            entity.Property(e => e.ID).ValueGeneratedNever();
         });
 
         OnModelCreatingPartial(modelBuilder);

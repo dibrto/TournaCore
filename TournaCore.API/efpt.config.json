@@ -25,6 +25,10 @@
       {
          "Name": "[dbo].[sys_Users]",
          "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[trm_Tournaments]",
+         "ObjectType": 0
       }
    ],
    "UiHint": null,

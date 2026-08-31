@@ -13,6 +13,7 @@ using TournaCore.API.Services.Users;
 using TournaCore.API.Services.Auth;
 using TournaCore.API.Services.Token;
 using TournaCore.API.Models.DTOs.Common;
+using TournaCore.API.Services.Tournament;
 
 namespace TournaCore.API {
     public class Program {
@@ -58,6 +59,7 @@ namespace TournaCore.API {
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<ITokenService, TokenService>();
             builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<ITournamentService, TournamentService>();
 
             // api doc
             builder.Services.AddOpenApi();

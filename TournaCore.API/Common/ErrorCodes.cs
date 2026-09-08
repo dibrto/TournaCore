@@ -17,4 +17,8 @@ public static class ErrorCodes {
     public static readonly AppError UserRoleNotFound = new(404, 1104, "User role doesn't exist");
     public static readonly AppError CannotModifyAdmin = new(403, 1105, "Admin role cannot be changed");
     public static readonly AppError CannotAssignAdminRole = new(403, 1106, "Admin role cannot be assigned");
+
+    // Tournament 2000 - 2999
+    public static readonly AppError TournamentNotFound = new(404, 2001, "Tournament doens't exist");
+    public static readonly AppError NotTournamentOwner = new(401, 2002, "You are not allowed to modify this tournament");
 }

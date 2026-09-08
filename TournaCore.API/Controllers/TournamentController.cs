@@ -17,10 +17,19 @@ namespace TournaCore.API.Controllers {
         [Authorize(Roles = "Admin,Organizer")]
         [HttpPost]
         [ProducesAppError(nameof(ErrorCodes.ValidationError))]
-        public async Task<Created<CreateTournamentResponse>> Post(CreateTournamentRequest req) {
+        public async Task<Created<CreateTournamentResponse>> Post(TournamentRequest req) {
             var res = await service.Create(req, User.GetEmail());
 
             return TypedResults.Created($"/tournaments/{res.ID}", res);
+        }
+
+        [Authorize(Roles = "Admin,Organizer")]
+        [HttpPut("{id:guid}")]
+        [ProducesAppError(nameof(ErrorCodes.ValidationError))]
+        public async Task<NoContent> Put(Guid id, TournamentRequest req) {
+            await service.Put(id, req, User.GetEmail());
+
+            return TypedResults.NoContent();
         }
     }
 }

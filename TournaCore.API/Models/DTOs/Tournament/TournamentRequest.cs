@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 
 namespace TournaCore.API.Models.DTOs.Tournament {
-    public class CreateTournamentRequest {
+    public class TournamentRequest {
         [Required]
         [MaxLength(50)]
         public string Name { get; set; } = null!;

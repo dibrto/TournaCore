@@ -3,6 +3,7 @@ using TournaCore.API.Models.DTOs.Tournament;
 
 namespace TournaCore.API.Services.Tournament {
     public interface ITournamentService {
-        Task<CreateTournamentResponse> Create(CreateTournamentRequest req, string email);
+        Task<CreateTournamentResponse> Create(TournamentRequest req, string email);
+        Task Put(Guid id, TournamentRequest req, string email);
     }
 }

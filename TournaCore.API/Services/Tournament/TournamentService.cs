@@ -9,6 +9,16 @@ using TournaCore.API.Services.Tournament;
 
 namespace TournaCore.API.Services.Users {
     public class TournamentService(TournaCoreDbContext db) : ITournamentService {
+        public async Task<List<GetAllTournamentsResponse>> GetAll() {
+            return await db.trm_Tournaments
+                .Select(tur => new GetAllTournamentsResponse {
+                    ID = tur.ID,
+                    Name = tur.Name,
+                    StartDate = tur.StartDate
+                })
+                .ToListAsync();
+        }
+
         public async Task<CreateTournamentResponse> Create(TournamentRequest req, string email) {
             var now = DateTime.Now;
             var tournament = new trm_Tournament {

@@ -11,9 +11,18 @@ using TournaCore.API.Services.Tournament;
 using TournaCore.API.Services.Users;
 
 namespace TournaCore.API.Controllers {
-    [Route("api/v1/[controller]")]
+    [Route("api/v1/tournaments")]
     [ApiController]
     public class TournamentController(ITournamentService service) : ControllerBase {
+
+        [Authorize]
+        [HttpGet]
+        public async Task<Ok<List<GetAllTournamentsResponse>>> GetAll() {
+            var res = await service.GetAll();
+
+            return TypedResults.Ok(res);
+        }
+
         [Authorize(Roles = "Admin,Organizer")]
         [HttpPost]
         [ProducesAppError(nameof(ErrorCodes.ValidationError))]

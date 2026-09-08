@@ -26,6 +26,7 @@ namespace TournaCore.API.Controllers {
         [Authorize(Roles = "Admin,Organizer")]
         [HttpPut("{id:guid}")]
         [ProducesAppError(nameof(ErrorCodes.ValidationError))]
+        [ProducesAppError(nameof(ErrorCodes.NotTournamentOwner))]
         public async Task<NoContent> Put(Guid id, TournamentRequest req) {
             await service.Put(id, req, User.GetEmail());
 

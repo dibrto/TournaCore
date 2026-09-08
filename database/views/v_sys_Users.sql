@@ -20,10 +20,10 @@ SELECT		u.ID
 			, u.Role_ID
 			, role.Name		AS RoleName
 			, u.PassHash
-			, u.CD
 			, u.CU
-			, u.LD
+			, u.CD
 			, u.LU
+			, u.LD
 FROM		dbo.sys_Users u
 JOIN		dbo.sys_Roles role
 ON			role.ID = u.Role_ID

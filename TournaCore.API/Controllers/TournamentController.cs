@@ -23,6 +23,15 @@ namespace TournaCore.API.Controllers {
             return TypedResults.Ok(res);
         }
 
+        [Authorize]
+        [HttpGet("{id:guid}")]
+        [ProducesAppError(nameof(ErrorCodes.TournamentNotFound))]
+        public async Task<Ok<GetTournamentResponse>> GetById(Guid id) {
+            var res = await service.GetById(id);
+
+            return TypedResults.Ok(res);
+        }
+
         [Authorize(Roles = "Admin,Organizer")]
         [HttpPost]
         [ProducesAppError(nameof(ErrorCodes.ValidationError))]

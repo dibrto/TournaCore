@@ -19,6 +19,26 @@ namespace TournaCore.API.Services.Users {
                 .ToListAsync();
         }
 
+        public async Task<GetTournamentResponse> GetById(Guid id) {
+            var tournament = await db.trm_Tournaments
+                .Select(tur => new GetTournamentResponse {
+                    ID = tur.ID,
+                    Name = tur.Name,
+                    StartDate = tur.StartDate,
+                    EndDate = tur.EndDate,
+                    CreatedBy = tur.CU,
+                    CreatedAt = tur.CD,
+                    UpdatedBy = tur.LU,
+                    UpdatedAt = tur.LD,
+                })
+                .SingleOrDefaultAsync(trm => trm.ID == id);
+
+            if (tournament is null)
+                throw new AppException(ErrorCodes.TournamentNotFound);
+
+            return tournament;
+        }
+
         public async Task<CreateTournamentResponse> Create(TournamentRequest req, string email) {
             var now = DateTime.Now;
             var tournament = new trm_Tournament {
@@ -55,6 +75,6 @@ namespace TournaCore.API.Services.Users {
             tournament.LU = email;
             tournament.LD = DateTime.Now;
             await db.SaveChangesAsync();
-        }
+        }    
     }
 }

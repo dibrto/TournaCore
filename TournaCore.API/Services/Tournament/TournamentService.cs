@@ -64,13 +64,13 @@ namespace TournaCore.API.Services.Users {
                 EndDate = tournament.EndDate,
             };
         }
-        public async Task Put(Guid id, TournamentRequest req, string email) {
+        public async Task Put(Guid id, TournamentRequest req, string email, Guid userId) {
             var tournament = await db.trm_Tournaments.SingleOrDefaultAsync(tur => tur.ID == id);
 
             if (tournament is null)
                 throw new AppException(ErrorCodes.TournamentNotFound);
 
-            if (email != tournament.CU)
+            if (userId != tournament.Owner_ID)
                 throw new AppException(ErrorCodes.NotTournamentOwner);
 
             db.Entry(tournament).CurrentValues.SetValues(req);

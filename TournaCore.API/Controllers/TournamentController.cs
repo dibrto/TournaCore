@@ -1,14 +1,10 @@
-﻿using System.Security.Claims;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using TournaCore.API.Common;
 using TournaCore.API.Common.Swagger;
 using TournaCore.API.Models.DTOs.Tournament;
-using TournaCore.API.Models.DTOs.User;
 using TournaCore.API.Services.Tournament;
-using TournaCore.API.Services.Users;
 
 namespace TournaCore.API.Controllers {
     [Route("api/v1/tournaments")]
@@ -46,7 +42,7 @@ namespace TournaCore.API.Controllers {
         [ProducesAppError(nameof(ErrorCodes.ValidationError))]
         [ProducesAppError(nameof(ErrorCodes.NotTournamentOwner))]
         public async Task<NoContent> Put(Guid id, TournamentRequest req) {
-            await service.Put(id, req, User.GetEmail());
+            await service.Put(id, req, User.GetEmail(), User.GetUserId());
 
             return TypedResults.NoContent();
         }

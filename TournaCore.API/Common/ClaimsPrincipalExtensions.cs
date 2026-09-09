@@ -6,5 +6,11 @@ namespace TournaCore.API.Common {
             return user.FindFirstValue(ClaimTypes.Email)
                 ?? throw new UnauthorizedAccessException("Email claim is missing.");
         }
+
+        public static Guid GetUserId(this ClaimsPrincipal user) {
+            var userId = user.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            return Guid.Parse(userId!);
+        }
     }
 }

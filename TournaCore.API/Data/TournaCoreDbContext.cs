@@ -61,6 +61,8 @@ public partial class TournaCoreDbContext : DbContext
                 .IsClustered();
 
             entity.Property(e => e.ID).ValueGeneratedNever();
+
+            entity.HasOne(d => d.Owner).WithMany(p => p.trm_Tournaments).OnDelete(DeleteBehavior.ClientSetNull);
         });
 
         OnModelCreatingPartial(modelBuilder);

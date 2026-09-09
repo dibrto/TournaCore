@@ -17,17 +17,17 @@ public partial class sys_Role
     [StringLength(50)]
     public string Name { get; set; } = null!;
 
-    [Precision(3)]
-    public DateTime CD { get; set; }
-
     [StringLength(255)]
     public string CU { get; set; } = null!;
 
     [Precision(3)]
-    public DateTime LD { get; set; }
+    public DateTime CD { get; set; }
 
     [StringLength(255)]
     public string LU { get; set; } = null!;
+
+    [Precision(3)]
+    public DateTime LD { get; set; }
 
     [InverseProperty("Role")]
     public virtual ICollection<sys_User> sys_Users { get; set; } = new List<sys_User>();

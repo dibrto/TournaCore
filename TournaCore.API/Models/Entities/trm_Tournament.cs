@@ -22,15 +22,21 @@ public partial class trm_Tournament
     [Precision(3)]
     public DateTime EndDate { get; set; }
 
-    [Precision(3)]
-    public DateTime CD { get; set; }
-
     [StringLength(255)]
     public string CU { get; set; } = null!;
 
     [Precision(3)]
-    public DateTime LD { get; set; }
+    public DateTime CD { get; set; }
 
     [StringLength(255)]
     public string LU { get; set; } = null!;
+
+    [Precision(3)]
+    public DateTime LD { get; set; }
+
+    public Guid Owner_ID { get; set; }
+
+    [ForeignKey("Owner_ID")]
+    [InverseProperty("trm_Tournaments")]
+    public virtual sys_User Owner { get; set; } = null!;
 }

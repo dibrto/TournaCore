@@ -36,7 +36,7 @@ namespace TournaCore.API.Controllers {
         [HttpPost]
         [ProducesAppError(nameof(ErrorCodes.ValidationError))]
         public async Task<Created<CreateTournamentResponse>> Post(TournamentRequest req) {
-            var res = await service.Create(req, User.GetEmail());
+            var res = await service.Create(req, User.GetEmail(), User.GetUserId());
 
             return TypedResults.Created($"/tournaments/{res.ID}", res);
         }

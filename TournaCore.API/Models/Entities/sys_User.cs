@@ -21,17 +21,17 @@ public partial class sys_User
     [Unicode(false)]
     public string PassHash { get; set; } = null!;
 
-    [Precision(3)]
-    public DateTime CD { get; set; }
-
     [StringLength(255)]
     public string CU { get; set; } = null!;
 
     [Precision(3)]
-    public DateTime LD { get; set; }
+    public DateTime CD { get; set; }
 
     [StringLength(255)]
     public string LU { get; set; } = null!;
+
+    [Precision(3)]
+    public DateTime LD { get; set; }
 
     [StringLength(50)]
     public string Username { get; set; } = null!;
@@ -41,4 +41,7 @@ public partial class sys_User
     [ForeignKey("Role_ID")]
     [InverseProperty("sys_Users")]
     public virtual sys_Role Role { get; set; } = null!;
+
+    [InverseProperty("Owner")]
+    public virtual ICollection<trm_Tournament> trm_Tournaments { get; set; } = new List<trm_Tournament>();
 }

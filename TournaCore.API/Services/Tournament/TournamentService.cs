@@ -39,18 +39,20 @@ namespace TournaCore.API.Services.Users {
             return tournament;
         }
 
-        public async Task<CreateTournamentResponse> Create(TournamentRequest req, string email) {
+        public async Task<CreateTournamentResponse> Create(TournamentRequest req, string email, Guid userId) {
             var now = DateTime.Now;
             var tournament = new trm_Tournament {
                 ID = Guid.NewGuid(),
                 Name = req.Name,
                 StartDate = req.StartDate,
                 EndDate = req.EndDate,
+                Owner_ID = userId,
 
                 CD = now,
                 CU = email,
                 LD = now,
                 LU = email
+                
             };
             db.trm_Tournaments.Add(tournament);
             await db.SaveChangesAsync();

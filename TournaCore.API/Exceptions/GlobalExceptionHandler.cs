@@ -24,12 +24,22 @@ namespace TournaCore.API.Exceptions {
             await httpContext.Response.WriteAsJsonAsync(
                 new ServerErrorResponse {
                     ErrorCode = ErrorCodes.InternalServerError,
-                    ErrorMessage = exception.Message,
+                    ErrorMessage = GetExceptionMessage(exception),
                     StackTrace = exception.StackTrace
                 },
                 cancellationToken);
 
             return true;
+        }
+
+        private static string GetExceptionMessage(Exception exception) {
+            var currentException = exception;
+
+            while (currentException.InnerException != null) {
+                currentException = currentException.InnerException;
+            }
+
+            return currentException.Message;
         }
     }
 }

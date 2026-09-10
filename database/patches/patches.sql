@@ -1,6 +1,18 @@
 SET			NOCOUNT, ANSI_PADDING, ANSI_WARNINGS, CONCAT_NULL_YIELDS_NULL, ARITHABORT, QUOTED_IDENTIFIER, ANSI_NULLS, XACT_ABORT ON
 SET			NUMERIC_ROUNDABORT OFF
 
+/*------------------------------------------------------------------------
+
+Еntity tables
+ID → UNIQUEIDENTIFIER
+GUID FK → x_ID
+
+Static lookup tables
+ID → INT
+INT FK → xID
+
+*/------------------------------------------------------------------------
+
 IF	0=1
 BEGIN
 	----------------------------------------------------------------------------------------
@@ -173,6 +185,49 @@ BEGIN
 
 		ALTER TABLE dbo.trm_Tournaments 
 			ALTER COLUMN Owner_ID UNIQUEIDENTIFIER NOT NULL
+	
+		PRINT 'OK: ' + CONVERT(VARCHAR, @@TRANCOUNT) + ', ' + CONVERT(VARCHAR, GETDATE(), 121)
+		COMMIT
+    END TRY
+    BEGIN CATCH
+		PRINT 'Err (line ' + CONVERT(VARCHAR, ERROR_LINE()) + '): ' + ERROR_MESSAGE() + ', ' + CONVERT(VARCHAR, GETDATE(), 121)
+		IF @@TRANCOUNT > 0 ROLLBACK
+		;THROW
+    END CATCH
+END
+GO
+
+IF OBJECT_ID('dbo.trm_States') IS NULL
+BEGIN
+	----------------------------------------------------------------------------------------
+	RAISERROR ('20260910: Add table trm_States and relation with trm_Tournaments', 10, 1) WITH NOWAIT
+	----------------------------------------------------------------------------------------
+
+	IF @@TRANCOUNT > 0 ROLLBACK
+
+	BEGIN TRY 
+		BEGIN TRAN PATCH
+
+		CREATE TABLE trm_States (
+					ID			INT					NOT NULL
+					, Name		NVARCHAR(50)		NOT NULL
+					, CU		NVARCHAR(255)		NOT NULL
+					, CD		DATETIME2(3)		NOT NULL    CONSTRAINT DF_trm_States_CD DEFAULT GETDATE()
+					, CONSTRAINT PK_trm_States_ID PRIMARY KEY CLUSTERED (ID)
+		)
+
+		INSERT		dbo.trm_States (ID, Name, CU)
+		VALUES		  (1, 'Registration', 'dibr')
+					, (2, 'Ongoing', 'dibr')
+					, (3, 'Completed', 'dibr')
+					, (4, 'Cancelled', 'dibr')
+
+		ALTER TABLE dbo.trm_Tournaments ADD
+			StateID INT NOT NULL CONSTRAINT DF_Migration_trm_Tournaments_StateID DEFAULT(1)
+			, CONSTRAINT FK_trm_Tournaments_trm_States_StateID FOREIGN KEY (StateID) REFERENCES dbo.trm_States (ID)
+
+		ALTER TABLE dbo.trm_Tournaments 
+			DROP CONSTRAINT DF_Migration_trm_Tournaments_StateID
 	
 		PRINT 'OK: ' + CONVERT(VARCHAR, @@TRANCOUNT) + ', ' + CONVERT(VARCHAR, GETDATE(), 121)
 		COMMIT

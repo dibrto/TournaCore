@@ -47,6 +47,7 @@ namespace TournaCore.API.Services.Users {
                 StartDate = req.StartDate,
                 EndDate = req.EndDate,
                 Owner_ID = userId,
+                StateID = 1,
 
                 CD = now,
                 CU = email,

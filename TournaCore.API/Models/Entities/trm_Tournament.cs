@@ -36,7 +36,13 @@ public partial class trm_Tournament
 
     public Guid Owner_ID { get; set; }
 
+    public int StateID { get; set; }
+
     [ForeignKey("Owner_ID")]
     [InverseProperty("trm_Tournaments")]
     public virtual sys_User Owner { get; set; } = null!;
+
+    [ForeignKey("StateID")]
+    [InverseProperty("trm_Tournaments")]
+    public virtual trm_State State { get; set; } = null!;
 }

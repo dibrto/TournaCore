@@ -27,6 +27,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[trm_States]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[trm_Tournaments]",
          "ObjectType": 0
       }

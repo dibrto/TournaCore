@@ -18,6 +18,8 @@ public partial class TournaCoreDbContext : DbContext
 
     public virtual DbSet<sys_User> sys_Users { get; set; }
 
+    public virtual DbSet<trm_State> trm_States { get; set; }
+
     public virtual DbSet<trm_Tournament> trm_Tournaments { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -50,6 +52,14 @@ public partial class TournaCoreDbContext : DbContext
             entity.HasOne(d => d.Role).WithMany(p => p.sys_Users).OnDelete(DeleteBehavior.ClientSetNull);
         });
 
+        modelBuilder.Entity<trm_State>(entity =>
+        {
+            entity.HasKey(e => e.ID).HasName("PK_trm_States_ID");
+
+            entity.Property(e => e.ID).ValueGeneratedNever();
+            entity.Property(e => e.CD).HasDefaultValueSql("(getdate())", "DF_trm_States_CD");
+        });
+
         modelBuilder.Entity<trm_Tournament>(entity =>
         {
             entity.HasKey(e => e.ID)
@@ -63,6 +73,8 @@ public partial class TournaCoreDbContext : DbContext
             entity.Property(e => e.ID).ValueGeneratedNever();
 
             entity.HasOne(d => d.Owner).WithMany(p => p.trm_Tournaments).OnDelete(DeleteBehavior.ClientSetNull);
+
+            entity.HasOne(d => d.State).WithMany(p => p.trm_Tournaments).OnDelete(DeleteBehavior.ClientSetNull);
         });
 
         OnModelCreatingPartial(modelBuilder);

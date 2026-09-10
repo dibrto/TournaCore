@@ -5,6 +5,8 @@ namespace TournaCore.API.Models.DTOs.Tournament {
     public class GetTournamentResponse {
         public Guid ID { get; set; }
         public string Name { get; set; } = null!;
+        public int StateID { get; set; }
+        public string StateName { get; set; } = null!;
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string CreatedBy { get; set; } = null!; // CU

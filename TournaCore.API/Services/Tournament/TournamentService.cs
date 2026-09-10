@@ -14,7 +14,9 @@ namespace TournaCore.API.Services.Users {
                 .Select(tur => new GetAllTournamentsResponse {
                     ID = tur.ID,
                     Name = tur.Name,
-                    StartDate = tur.StartDate
+                    StartDate = tur.StartDate,
+                    StateID = tur.StateID,
+                    StateName = tur.State.Name,
                 })
                 .ToListAsync();
         }
@@ -26,6 +28,9 @@ namespace TournaCore.API.Services.Users {
                     Name = tur.Name,
                     StartDate = tur.StartDate,
                     EndDate = tur.EndDate,
+                    StateID = tur.StateID,
+                    StateName = tur.State.Name,
+
                     CreatedBy = tur.CU,
                     CreatedAt = tur.CD,
                     UpdatedBy = tur.LU,

@@ -1,5 +1,6 @@
 
 using System.Text;
+using System.Text.Json;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,11 +10,11 @@ using TournaCore.API.Common;
 using TournaCore.API.Common.Swagger;
 using TournaCore.API.Data;
 using TournaCore.API.Exceptions;
-using TournaCore.API.Services.Users;
+using TournaCore.API.Models.DTOs.Common;
 using TournaCore.API.Services.Auth;
 using TournaCore.API.Services.Token;
-using TournaCore.API.Models.DTOs.Common;
 using TournaCore.API.Services.Tournament;
+using TournaCore.API.Services.Users;
 
 namespace TournaCore.API {
     public class Program {
@@ -35,6 +36,7 @@ namespace TournaCore.API {
             // Add services to the container
             builder.Services
                 .AddControllers(options => options.Filters.Add(new ProducesAttribute("application/json")))
+                .AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase)
                 // validation return type conf
                 .ConfigureApiBehaviorOptions(options => {
                      options.InvalidModelStateResponseFactory = context => {
